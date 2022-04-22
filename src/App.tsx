@@ -1,26 +1,56 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, createContext } from "react";
+import AlertList from "./components/AlertList";
+import "./App.scss";
 
-function App() {
+export interface IAlert {
+  id: number;
+  message: string;
+  type: string;
+  timeout: number;
+}
+
+type Alerts = {
+  prevAlerts: IAlert[];
+};
+
+export interface IFeedBackContext {
+  alerts: IAlert[];
+  createAlert: (alert: IAlert) => void;
+  // createAlert: any;
+}
+
+interface IStateAlert {
+  alerts: IAlert[];
+  setAlerts: (alert: IAlert) => [];
+  // setAlerts: any;
+}
+
+interface IAlertCount {
+  /* alertCount Interface */
+  alertCount: number;
+  // setAlertCount: (alertCount: number) => void; /* something here is fucked up */
+}
+
+export const FeedbackContext = createContext<IFeedBackContext[]>([]);
+
+const App = () => {
+  const [alerts, setAlerts] = useState<IStateAlert[]>([]);
+  const [alertCount, setAlertCount] = useState(0);
+
+  const createAlert = (message: string, type: string, timeout: number) => {
+    setAlertCount((prevCount) => prevCount++); // error here
+    const alert = { id: alertCount, message, type, timeout };
+
+    setAlerts((prevAlerts: any) => [alert, ...prevAlerts]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <FeedbackContext.Provider value={{ alerts }}>
+        <AlertList />
+      </FeedbackContext.Provider>
     </div>
   );
-}
+};
 
 export default App;
