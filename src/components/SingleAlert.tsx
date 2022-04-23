@@ -13,7 +13,7 @@ const SingleAlert = ({ alertInfo }: any) => {
     }, alertInfo.timeout);
 
     return () => clearTimeout(alertTimer);
-  }, [alerts]);
+  }, [deleteAlert]);
 
   return (
     <Alert
