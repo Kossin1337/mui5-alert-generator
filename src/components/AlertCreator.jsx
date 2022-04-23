@@ -4,17 +4,28 @@ import { ButtonGroup, Button } from "@mui/material";
 
 const AlertCreator = () => {
   const { createAlert } = useContext(FeedbackContext);
-  console.log(createAlert);
 
   return (
     <div className="alert-creator">
-      <h1>yoyoyo</h1>
       <ButtonGroup>
-        <Button onClick={createAlert("success", "success", 3000)}>
+        <Button
+          variant="filled"
+          onClick={() => createAlert("success", "success", 500)}
+        >
           Success
         </Button>
-        <Button onClick={createAlert("alert", "alert", 3000)}>Alert</Button>
-        <Button onClick={createAlert("info", "info", 3000)}>Info</Button>
+        <Button
+          variant="filled"
+          onClick={() => createAlert("warning", "warning", 1250)}
+        >
+          Alert
+        </Button>
+        <Button
+          variant="filled"
+          onClick={() => createAlert("info", "info", 1750)}
+        >
+          Info
+        </Button>
       </ButtonGroup>
     </div>
   );

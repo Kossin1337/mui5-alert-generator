@@ -1,10 +1,19 @@
-import React from 'react'
-import './SingleAlert'
+import React, { useContext } from "react";
+import { FeedbackContext } from "../App";
+import SingleAlert from "./SingleAlert";
+import { IAlert } from "../App";
 
 const AlertList = () => {
-  return (
-    <div className='alert-list'>AlertList</div>
-  )
-}
+  const { alerts } = useContext(FeedbackContext);
 
-export default AlertList
+  return (
+    <div className="alert-list">
+      <span>Feedback List</span>
+      {alerts.map((alert: IAlert) => (
+        <SingleAlert alertInfo={alert} key={alert.id} />
+      ))}
+    </div>
+  );
+};
+
+export default AlertList;
