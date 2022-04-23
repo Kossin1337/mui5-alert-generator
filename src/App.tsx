@@ -1,5 +1,6 @@
 import React, { useState, createContext } from "react";
 import AlertList from "./components/AlertList";
+import AlertCreator from "./components/AlertCreator";
 import "./App.scss";
 
 export interface IAlert {
@@ -9,44 +10,39 @@ export interface IAlert {
   timeout: number;
 }
 
-type Alerts = {
-  prevAlerts: IAlert[];
-};
-
 export interface IFeedBackContext {
   alerts: IAlert[];
-  createAlert: (alert: IAlert) => void;
+  createAlert: (message: string, type: string, timeout: number) => void;
+  deleteAlert: (id: number) => void;
   // createAlert: any;
 }
 
-interface IStateAlert {
-  alerts: IAlert[];
-  setAlerts: (alert: IAlert) => [];
-  // setAlerts: any;
-}
-
-interface IAlertCount {
-  /* alertCount Interface */
-  alertCount: number;
-  // setAlertCount: (alertCount: number) => void; /* something here is fucked up */
-}
-
-export const FeedbackContext = createContext<IFeedBackContext[]>([]);
+// export const FeedbackContext = createContext<any>([]);
+export const FeedbackContext = createContext<IFeedBackContext | null>(null);
 
 const App = () => {
-  const [alerts, setAlerts] = useState<IStateAlert[]>([]);
-  const [alertCount, setAlertCount] = useState(0);
+  const [alerts, setAlerts] = useState<IAlert[]>([]);
+  const [alertCount, setAlertCount] = useState<number>(0);
 
   const createAlert = (message: string, type: string, timeout: number) => {
-    setAlertCount((prevCount) => prevCount++); // error here
     const alert = { id: alertCount, message, type, timeout };
-
     setAlerts((prevAlerts: any) => [alert, ...prevAlerts]);
+
+    setAlertCount((prevCount) => prevCount++);
+  };
+
+  const deleteAlert = (id: number) => {
+    setAlerts(
+      alerts.filter((alert: IAlert) => {
+        return alert.id !== id;
+      })
+    );
   };
 
   return (
     <div className="app">
-      <FeedbackContext.Provider value={{ alerts }}>
+      <FeedbackContext.Provider value={{ alerts, createAlert, deleteAlert }}>
+        <AlertCreator />
         <AlertList />
       </FeedbackContext.Provider>
     </div>
